@@ -1,0 +1,6 @@
+artifacts_root: artifacts
+
+data_ingestion:
+  source_URL:  "https://github.com/ABCD123-GOLD/End-to-end-chicken-Disease-Classification/raw/refs/heads/main/Chicken-fecal-images.7z"
+  local_data_path: "artifacts/data_ingestion/data.zip"
+  unzip_dir: "artifacts/data_ingestion/unzipped"
