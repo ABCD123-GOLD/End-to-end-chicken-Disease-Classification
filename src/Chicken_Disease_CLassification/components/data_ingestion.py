@@ -31,3 +31,7 @@ class DataIngestion:
             archive.extractall(path=unzip_path)
 
         logger.info(f" Extracted 7z archive to: {unzip_path}")
+
+
+
+
