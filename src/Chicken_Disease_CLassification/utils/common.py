@@ -8,7 +8,7 @@ from typing import Any, List
 from box import ConfigBox
 from box.exceptions import BoxValueError
 from typeguard import typechecked
-from src.Chicken_Disease_Classification.utils.logger import logger
+from src.Chicken_Disease_CLassification.utils.logger import logger
 
 @typechecked
 def read_yaml(path: Path) -> ConfigBox:
