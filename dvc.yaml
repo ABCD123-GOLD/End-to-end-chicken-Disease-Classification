@@ -1,0 +1,64 @@
+stages:
+  data_ingestion:
+    cmd: python src/Chicken_Disease_Classification/pipeline/stage01_data_ingestion.py
+    deps:
+      - src/Chicken_Disease_Classification/pipeline/stage01_data_ingestion.py
+      - config/config.yaml
+    outs: 
+      - artifacts/data_ingestion/data
+
+
+  prepare_base_model:
+    cmd: python src/Chicken_Disease_Classification/pipeline/stage02_prepare_base_model.py
+    deps: 
+      - src/Chicken_Disease_Classification/pipeline/stage02_prepare_base_model.py
+      - config/config.yaml
+    params:
+      - IMAGE_SIZE
+      - INCLUDE_TOP
+      - CLASSES
+      - WEIGHTS
+      - LEARNING_RATE
+    outs:
+      - artifacts/prepare_base_model
+
+
+  prepare_callbacks:
+    cmd: python src/Chicken_Disease_Classification/pipeline/stage03_prepare_callbacks.py
+    deps:
+      - src/Chicken_Disease_Classification/pipeline/stage03_prepare_callbacks.py
+      - config/config.yaml
+    outs:
+      - artifacts/prepare_callbacks
+
+
+  training:
+    cmd: python src/Chicken_Disease_Classification/pipeline/stage04_model_traning.py
+    deps:
+      - src/Chicken_Disease_Classification/pipeline/stage04_model_traning.py
+      - src/Chicken_Disease_Classification/pipeline/stage03_prepare_callbacks.py
+      - config/config.yaml
+      - artifacts/data_ingestion/data
+      - artifacts/prepare_base_model
+    params:
+      - IMAGE_SIZE
+      - EPOCHS
+      - BATCH_SIZE
+      - AUGMENTATION
+    outs:
+      - artifacts/training/trained_model.keras
+
+
+  evaluation:
+    cmd: python src/Chicken_Disease_Classification/pipeline/stage05_model_evaluation.py
+    deps:
+      - src/Chicken_Disease_Classification/pipeline/stage05_model_evaluation.py
+      - config/config.yaml
+      - artifacts/data_ingestion/data
+      - artifacts/training/trained_model.keras
+    params:
+      - IMAGE_SIZE
+      - BATCH_SIZE
+    metrics:
+      - artifacts/evaluation/score.txt:
+          cache: false

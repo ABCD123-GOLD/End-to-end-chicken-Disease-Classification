@@ -1,0 +1,144 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python 
+      src/Chicken_Disease_Classification/pipeline/stage01_data_ingestion.py
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: a43d2c2a6c3927d285da7a41244dd30a
+      size: 944
+    - path: 
+        src/Chicken_Disease_Classification/pipeline/stage01_data_ingestion.py
+      hash: md5
+      md5: 316400d9aee3cfd1fbebf98eacb075b9
+      size: 1130
+    outs:
+    - path: artifacts/data_ingestion/data
+      hash: md5
+      md5: d777311b1bf12a0a70c8abc8eda40654.dir
+      size: 294125618
+      nfiles: 8068
+  prepare_base_model:
+    cmd: python 
+      src/Chicken_Disease_Classification/pipeline/stage02_prepare_base_model.py
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: a43d2c2a6c3927d285da7a41244dd30a
+      size: 944
+    - path: 
+        src/Chicken_Disease_Classification/pipeline/stage02_prepare_base_model.py
+      hash: md5
+      md5: 20a3f388feaf5aef207bfdff2efd0188
+      size: 1146
+    params:
+      params.yaml:
+        CLASSES: 4
+        IMAGE_SIZE:
+        - 224
+        - 224
+        - 3
+        INCLUDE_TOP: false
+        LEARNING_RATE: 0.001
+        WEIGHTS: imagenet
+    outs:
+    - path: artifacts/prepare_base_model
+      hash: md5
+      md5: 00c573df50bb72e580e32106976e23fa.dir
+      size: 118274216
+      nfiles: 2
+  prepare_callbacks:
+    cmd: python 
+      src/Chicken_Disease_Classification/pipeline/stage03_prepare_callbacks.py
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: a43d2c2a6c3927d285da7a41244dd30a
+      size: 944
+    - path: 
+        src/Chicken_Disease_Classification/pipeline/stage03_prepare_callbacks.py
+      hash: md5
+      md5: 088d3ea89b105519a57320995fe76ecd
+      size: 1140
+    outs:
+    - path: artifacts/prepare_callbacks
+      hash: md5
+      md5: d751713988987e9331980363e24189ce.dir
+      size: 0
+      nfiles: 0
+  training:
+    cmd: python 
+      src/Chicken_Disease_Classification/pipeline/stage04_model_traning.py
+    deps:
+    - path: artifacts/data_ingestion/data
+      hash: md5
+      md5: d777311b1bf12a0a70c8abc8eda40654.dir
+      size: 294125618
+      nfiles: 8068
+    - path: artifacts/prepare_base_model
+      hash: md5
+      md5: 00c573df50bb72e580e32106976e23fa.dir
+      size: 118274216
+      nfiles: 2
+    - path: config/config.yaml
+      hash: md5
+      md5: a43d2c2a6c3927d285da7a41244dd30a
+      size: 944
+    - path: 
+        src/Chicken_Disease_Classification/pipeline/stage03_prepare_callbacks.py
+      hash: md5
+      md5: 088d3ea89b105519a57320995fe76ecd
+      size: 1140
+    - path: src/Chicken_Disease_Classification/pipeline/stage04_model_traning.py
+      hash: md5
+      md5: d550d263a5b6a68aa88abea7d06a860b
+      size: 1669
+    params:
+      params.yaml:
+        AUGMENTATION: true
+        BATCH_SIZE: 16
+        EPOCHS: 25
+        IMAGE_SIZE:
+        - 224
+        - 224
+        - 3
+    outs:
+    - path: artifacts/training/trained_model.keras
+      hash: md5
+      md5: 9dc562b875e6af446532c03807c7993d
+      size: 60145722
+  evaluation:
+    cmd: python 
+      src/Chicken_Disease_Classification/pipeline/stage05_model_evaluation.py
+    deps:
+    - path: artifacts/data_ingestion/data
+      hash: md5
+      md5: d777311b1bf12a0a70c8abc8eda40654.dir
+      size: 294125618
+      nfiles: 8068
+    - path: artifacts/training/trained_model.keras
+      hash: md5
+      md5: 9dc562b875e6af446532c03807c7993d
+      size: 60145722
+    - path: config/config.yaml
+      hash: md5
+      md5: a43d2c2a6c3927d285da7a41244dd30a
+      size: 944
+    - path: 
+        src/Chicken_Disease_Classification/pipeline/stage05_model_evaluation.py
+      hash: md5
+      md5: e6dc5baef4df0aac98288cf4aa11000c
+      size: 1209
+    params:
+      params.yaml:
+        BATCH_SIZE: 16
+        IMAGE_SIZE:
+        - 224
+        - 224
+        - 3
+    outs:
+    - path: artifacts/evaluation/score.txt
+      hash: md5
+      md5: 56093522a1880108fb8c2fefb92328eb
+      size: 32

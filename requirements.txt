@@ -16,4 +16,6 @@ types-pyYAML
 Flask
 Flask-cors
 typeguard
+py7zr
+kagglehub
 -e . 

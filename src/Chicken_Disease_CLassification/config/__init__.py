@@ -1,0 +1,1 @@
+from Chicken_Disease_Classification.config.configuration import EvaluationConfig

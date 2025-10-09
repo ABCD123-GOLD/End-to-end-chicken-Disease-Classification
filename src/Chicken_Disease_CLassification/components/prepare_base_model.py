@@ -1,9 +1,11 @@
 import os
 import urllib.request as request 
-from src.Chicken_Disease_CLassification.utils.logger import logger
-from src.Chicken_Disease_CLassification.utils.common import get_size
+from Chicken_Disease_Classification.utils.logger import logger
+from Chicken_Disease_Classification.utils.common import get_size
 import tensorflow as tf
-from src.Chicken_Disease_CLassification.entity.config_entity import PrepareBasicModelConfig
+from Chicken_Disease_Classification.entity.config_entity import PrepareBasicModelConfig
+from Chicken_Disease_Classification.components.prepare_callbacks import PrepareCallback
+
 from pathlib import Path
 
 

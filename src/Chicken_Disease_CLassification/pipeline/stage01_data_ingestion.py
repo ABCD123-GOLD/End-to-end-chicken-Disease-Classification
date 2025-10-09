@@ -1,8 +1,8 @@
 
-from src.Chicken_Disease_Classification.utils.logger import logger
-from src.Chicken_Disease_Classification.entity.config_entity import DataIngestionConfig
-from src.Chicken_Disease_Classification.config.configuration import ConfigurationManager
-from src.Chicken_Disease_Classification.components.data_ingestion import DataIngestion
+from Chicken_Disease_Classification.utils.logger import logger
+from Chicken_Disease_Classification.entity.config_entity import DataIngestionConfig
+from Chicken_Disease_Classification.config.configuration import ConfigurationManager
+from Chicken_Disease_Classification.components.data_ingestion import DataIngestion
 
 STAGE_NAME = "Data Ingestion stage"
 
@@ -14,7 +14,7 @@ class DataIngestionTraningPipline:
             config = ConfigurationManager()
             data_ingestion_config = config.get_data_ingestion_config()
             data_ingestion = DataIngestion(config= data_ingestion_config)
-            data_ingestion.download_file()
+            data_ingestion.download_from_kagglehub()
             data_ingestion.extract_zip_file()
 
 
