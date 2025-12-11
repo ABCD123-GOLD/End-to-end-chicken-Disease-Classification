@@ -145,10 +145,6 @@ class Training:
         Train the model with generators, handle class imbalance,
         and save the best version in `.keras` format.
         """
-        # ---- Compute steps ----
-        self.steps_per_epoch = self.train_generator.samples // self.train_generator.batch_size
-        self.validation_steps = self.valid_generator.samples // self.valid_generator.batch_size
-
         # ---- Compute class weights for imbalance ----
         df = pd.read_csv(self.config.label_csv_path)
 
@@ -198,11 +194,11 @@ class Training:
         callback_list = callback_list + [early_stopping, reduce_lr, model_checkpoint, tensorboard_cb]
 
         # ---- Train the model ----
+        # ✅ CORRECTION: Removed steps_per_epoch and validation_steps.
+        # Keras will automatically determine the number of steps from the generator.
         history = self.model.fit(
             self.train_generator,
             epochs=self.config.params_epochs,
-            steps_per_epoch=self.steps_per_epoch,
-            validation_steps=self.validation_steps,
             validation_data=self.valid_generator,
             callbacks=callback_list,
             class_weight=class_weight_dict

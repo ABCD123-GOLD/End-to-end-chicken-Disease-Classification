@@ -90,3 +90,14 @@ def encodeImageIntoBase64(filename: Path) -> str:
         encoded = base64.b64encode(f.read()).decode("utf-8")
     logger.info(f"Image encoded into base64 from: {filename}")
     return encoded
+
+
+def decodeImage(imgstring, filename):
+    imgdata = base64.b64decode(imgstring)
+    with open(filename, 'wb') as f:
+        f.write(imgdata)
+        f.close()
+
+def encodeImageIntoBase64(croppedImagePath):
+    with open(croppedImagePath, "rb") as f:
+        return base64.b64encode(f.read())
